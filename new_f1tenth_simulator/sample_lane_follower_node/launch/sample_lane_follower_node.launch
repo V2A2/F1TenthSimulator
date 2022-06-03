@@ -1,0 +1,8 @@
+<launch>
+    <rosparam command="load" file="$(find sample_lane_follower_node)/settings.yaml"/>
+    <node pkg="sample_lane_follower_node" name="main_car_lane_follower" type="sample_lane_follower_node">
+      <param name="car_name" type="str" value="f1tenth_car" />
+      <param name="nav_drive_topic" type="str" value="/vesc/high_level/ackermann_cmd_mux/input/nav_0" />
+      <param name="speed" type="double" value="1.5" />
+    </node>
+</launch>

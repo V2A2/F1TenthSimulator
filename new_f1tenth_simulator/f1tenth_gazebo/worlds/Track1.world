@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <scene>
+      <ambient>0 0 0 1</ambient>
+      <background>0.25 0.25 0.25 1</background>
+      <shadows>false</shadows>
+    </scene>
+    <include>
+      <uri>model://f1tenth_model</uri>
+    </include>
+     <include>
+      <pose>0 0 0 0 0 0</pose>
+      <uri>model://f1tenth_track_model</uri>
+    </include>
+    <plugin name="track_publisher" filename="libtrack_plugin.so">
+    </plugin>
+    <plugin name="world_controls" filename="libworld_controls_plugin.so">
+    </plugin>
+  </world>
+</sdf>
