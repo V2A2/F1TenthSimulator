@@ -90,7 +90,7 @@ class ObjectTracking{
       double camera_z = 0;
       double camera_roll = 0;
       double camera_pitch = 0;
-      double camera_yaw =0;
+      double camera_yaw = 0;
       double cameraHorizontalFocalLength = 674.4192802;//649.4571919; Simulator only uses 1 focal length but real camera uses 649.457 for horizontal
       double cameraVerticalFocalLength = 674.4192802;
       double camera_x_in_car_frame = -0.02;
@@ -98,9 +98,12 @@ class ObjectTracking{
       double camera_z_in_car_frame = 0.2104;
       int camera_pixel_height = 720;
       int camera_pixel_width = 1280;
+      double maxCameraDistance = 100;
       std::vector<double> lastBoundingBoxData;
+      std::vector<double> lastOrientationData;
       //test vector
       std::vector<Vector2d> cv_data_points;
+      bool addPoseToBoundingBoxMessage = true;
     public:
       ObjectTracking():image_transport(n){
           n = ros::NodeHandle("~");
@@ -128,7 +131,8 @@ class ObjectTracking{
           cv::Mat greyScale;
           cv_ptr->image.convertTo(greyScale,CV_8UC1,255,0);
           cvtColor(greyScale,outputMat,cv::COLOR_GRAY2RGB);
-          for(int i=0;i<static_cast<int>(lastBoundingBoxData.size());i+=5){
+          int boundingBoxIndex = 5 + (int)(addPoseToBoundingBoxMessage) * 6;
+          for(int i=0;i<static_cast<int>(lastBoundingBoxData.size());i+=boundingBoxIndex){
             cv::Point pt1(lastBoundingBoxData.at(i+1),this->camera_pixel_height-lastBoundingBoxData.at(i+3));
             cv::Point pt2(lastBoundingBoxData.at(i+2),this->camera_pixel_height-lastBoundingBoxData.at(i+4));
             cv::rectangle(outputMat, pt1, pt2, cv::Scalar(255, 0, 0));
@@ -154,8 +158,7 @@ class ObjectTracking{
       void find_bounding_boxes(std::vector<geometry_msgs::Pose>poses,std::vector<std::string>names){
         std::vector<std::vector<Vector3d>> cornerDataForObjects;
         std::vector<int> classifications;
-        std::vector<Vector3d> rotations;
-        std::vector<Vector3d> coordinates;
+        std::vector<std::vector<double>> objectPoses;
         for(int i =0; i<static_cast<int>(poses.size());i++){
           int classification = object_data_finder.classification(names.at(i));
           if(classification >= 0){
@@ -170,12 +173,34 @@ class ObjectTracking{
             double z = poses.at(i).position.z;
             std::vector<Vector3d> corners = getCornersInWorldFrame(names.at(i),x,y,z,roll,pitch,yaw);
             cornerDataForObjects.push_back(corners);
+
+            std::vector<double> objectPoseInCameraFrame;
+            Vector3d objectPoseInWorldFrame(x,y,z);
+            Vector3d centerInCameraFrame = rotate(translate(objectPoseInWorldFrame,-this->camera_x,-this->camera_y,-this->camera_z),-this->camera_yaw,-this->camera_pitch,-this->camera_roll);
+            objectPoseInCameraFrame.push_back(centerInCameraFrame.x());
+            objectPoseInCameraFrame.push_back(centerInCameraFrame.y());
+            objectPoseInCameraFrame.push_back(centerInCameraFrame.z());
+            objectPoseInCameraFrame.push_back(roll-this->camera_roll);
+            objectPoseInCameraFrame.push_back(pitch-this->camera_pitch);
+            objectPoseInCameraFrame.push_back(yaw-this->camera_yaw);
+            objectPoses.push_back(objectPoseInCameraFrame);
           }
         }
 
         std::vector<std::vector<double>> bounding_box_data;
           for(int i = 0; i< static_cast<int>(classifications.size());i++){
-            bounding_box_data.push_back(getBoundingBoxData(classifications.at(i),cornerDataForObjects.at(i)));
+            std::vector<double> bounding_box_for_object = getBoundingBoxData(classifications.at(i),cornerDataForObjects.at(i));
+            if(bounding_box_for_object.size()>0){
+              if(addPoseToBoundingBoxMessage){
+              bounding_box_for_object.push_back(objectPoses.at(i).at(0));
+              bounding_box_for_object.push_back(objectPoses.at(i).at(1));
+              bounding_box_for_object.push_back(objectPoses.at(i).at(2));
+              bounding_box_for_object.push_back(objectPoses.at(i).at(3));
+              bounding_box_for_object.push_back(objectPoses.at(i).at(4));
+              bounding_box_for_object.push_back(objectPoses.at(i).at(5));
+              }
+              bounding_box_data.push_back(bounding_box_for_object);
+            }
         }
         std_msgs::Float64MultiArray bounding_box_message;
         std::vector<double> bounding_box_message_data;
@@ -212,19 +237,26 @@ class ObjectTracking{
             if((0<=coordinate_in_image_frame.x()&&coordinate_in_image_frame.x()<=this->camera_pixel_width) && (0<=coordinate_in_image_frame.y()&&coordinate_in_image_frame.y()<=this->camera_pixel_height)){
               coordinatePointInFrame = true;
             }
-            if(coordinate_in_image_frame.x()<minX){
+            if(coordinate_in_image_frame.x()<minX && coordinate_in_image_frame.y()>=0 && coordinate_in_image_frame.y()<=this->camera_pixel_height){ //&& coordinate_in_image_frame.y()>=0 && coordinate_in_image_frame.y()<=this->camera_pixel_height
               minX = coordinate_in_image_frame.x();
             }
-            if(coordinate_in_image_frame.x()>maxX){
+            if(coordinate_in_image_frame.x()>maxX && coordinate_in_image_frame.y()>=0 && coordinate_in_image_frame.y()<=this->camera_pixel_height){
               maxX = coordinate_in_image_frame.x();
             }
-            if(coordinate_in_image_frame.y()<minY){
+            if(coordinate_in_image_frame.y()<minY && coordinate_in_image_frame.x()>=0 && coordinate_in_image_frame.x()<=this->camera_pixel_width){ //&& coordinate_in_image_frame.x()>=0 && coordinate_in_image_frame.x()<=this->camera_pixel_width 
               minY = coordinate_in_image_frame.y();
             }
-            if(coordinate_in_image_frame.y()>maxY){
+            if(coordinate_in_image_frame.y()>maxY && coordinate_in_image_frame.x()>=0 && coordinate_in_image_frame.x()<=this->camera_pixel_width){
               maxY = coordinate_in_image_frame.y();
             }
           }
+          //NEXT 5 LINES IS AN OPTIONAL SETTING THAT MAKES AT LEAST 1/8 OF THE IMAGE SHOW UP BEFORE IT IS LABELED WITH A BOUNDING BOX
+          double ratio_x = abs((std::min(maxX,(double)this->camera_pixel_width)-std::max(minX,0.0)) / (maxX-minX));
+          double ratio_y = abs((std::min(maxY,(double)this->camera_pixel_height)-std::max(minY,0.0)) / (maxY-minY));
+          if(ratio_x <0.125 || ratio_y<0.125){
+            coordinatePointInFrame = false;
+          }
+
           if(coordinatePointInFrame){
             bounding_box_data.push_back(classification);
             bounding_box_data.push_back(std::max(minX,0.0));

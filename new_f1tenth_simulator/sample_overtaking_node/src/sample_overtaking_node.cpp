@@ -453,6 +453,7 @@ class SampleOvertaking{
     // 3 = merging back into normal lane
     long actionTimer = 0;
     bool canTurnBackIntoLane = false;
+    int wait_time = 0;
   public:
     SampleOvertaking(){
         n = ros::NodeHandle("~");
@@ -462,6 +463,7 @@ class SampleOvertaking{
         n.getParam("/model_topic",model_topic);
         n.getParam("car_name",carName);
         n.getParam("speed",speed);
+        n.getParam("wait_time",wait_time);
         drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 1);
         model_sub = n.subscribe(model_topic, 1, &SampleOvertaking::model_state_callback,this);
         scan_sub = n.subscribe(scan_topic, 1, &SampleOvertaking::scan_callback,this);
@@ -672,7 +674,7 @@ class SampleOvertaking{
         }
         if(desiredSpeed<3){
           actionTimer += currentTime -timeOfLastCall;
-          if(actionTimer>5000){
+          if(actionTimer>wait_time){
             actionTimer=0;
             drivingState = 1;
             setSwitchLaneInformation(currentCarLocation);

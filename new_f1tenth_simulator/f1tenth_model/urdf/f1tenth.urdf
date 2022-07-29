@@ -123,7 +123,7 @@
               <pointCloudTopicName>/3d_image/3d_cloud</pointCloudTopicName>
               <frameName>kinect_body</frameName>
               <pointCloudCutoff>0.1</pointCloudCutoff>
-              <pointCloudCutoffMax>10.0</pointCloudCutoffMax>
+              <pointCloudCutoffMax>100.0</pointCloudCutoffMax>
           </plugin>
         </sensor>
       </link>
