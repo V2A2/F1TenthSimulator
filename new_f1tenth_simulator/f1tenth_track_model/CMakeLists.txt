@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(f1tenth_track_model)
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp std_msgs road_description)
 catkin_package(
 	CATKIN_DEPENDS roscpp
 )

@@ -5,6 +5,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <sensor_msgs/Image.h>
+
 using namespace std;
 using namespace cv;
 // //Window used for testing
@@ -48,8 +49,6 @@ class SemanticSegmentation{
   {
   }
   Mat getMask(Mat input, int r, int g, int b){
-      // Scalar lower(rmin,gmin,bmin);
-      // Scalar upper(rmax,gmax,bmax);
       Scalar lower(r,g,b);
       Scalar upper(r,g,b);
       Mat colorFiltered;
@@ -84,9 +83,9 @@ class SemanticSegmentation{
       Mat cars = blueCarMat |redCarMat | yellowCarMat | clearCarMat | blackCarMat | carMiddleSection | lidarAndAntenna | powerBoard | whitePartOfCar | wheels;
       
       //scaling
-      cars = cars * 160 /256;
-      yellowLaneLines = yellowLaneLines * 240/256;
-      whiteLaneLines = whiteLaneLines * 80/256;
+      cars = cars * 2 /256;
+      yellowLaneLines = yellowLaneLines * 3/256;
+      whiteLaneLines = whiteLaneLines * 1/256;
 
       Mat combinedMat = cars | yellowLaneLines | whiteLaneLines;
       Mat scaledImage;

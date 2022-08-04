@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(sample_lane_follower_node)
-find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs geometry_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs geometry_msgs road_description)
 
 catkin_package(
 	CATKIN_DEPENDS roscpp rospy

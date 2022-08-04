@@ -15,7 +15,7 @@
     </include>
     <plugin name="track_publisher" filename="libtrack_plugin.so">
     </plugin>
-    <plugin name="world_controls" filename="libworld_controls_plugin.so">
-    </plugin>
+    <!-- <plugin name="world_controls" filename="libworld_controls_plugin.so">
+    </plugin> -->
   </world>
 </sdf>
