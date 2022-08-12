@@ -170,7 +170,7 @@ Road get_road(int trackNumber){
         roadLines.push_back(yellow);
         roadLines.push_back(innerWhite);
         roadLines.push_back(outerWhite);
-        return Road(roadLines);
+        return Road(roadLines,false);
     }
     return Road();
 }

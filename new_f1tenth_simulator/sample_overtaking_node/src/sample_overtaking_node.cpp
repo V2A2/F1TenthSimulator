@@ -19,7 +19,6 @@ class SampleOvertaking{
     ros::Subscriber model_sub;
     ros::Subscriber scan_sub;
     std::string carName = "";
-    double speed = 0;
     Road road = get_road(2);
     std::vector<int> overtakingLane;
     std::vector<int> previousLane;
@@ -44,7 +43,6 @@ class SampleOvertaking{
         n.getParam("scan_topic", scan_topic);
         n.getParam("/model_topic", model_topic);
         n.getParam("car_name", carName);
-        n.getParam("speed", speed);
         n.getParam("wait_time", wait_time);
         n.getParam("/max_safe_speed", max_safe_speed);
         drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 1);
@@ -112,6 +110,7 @@ class SampleOvertaking{
       return isSafeToTurn;
 
     }
+    
     double linear_distance_stearing_adjustments(Point car, Point firstPoint,Point secondPoint){
 
       double angleToRotateBy =-1 * (car.rotation - M_PI_2);
@@ -234,7 +233,7 @@ class SampleOvertaking{
       }
     }
 
-    double safeSpeedToFollowAt(){
+    double safeSpeedToFollowAt(Point carLocation){
       // naive version that needs to be improved
       if(lidar != nullptr){
         double minDistance = lidar->range_max;
@@ -243,32 +242,37 @@ class SampleOvertaking{
             minDistance = filteredLidarReadings.at(i);
           }
         }
-        return sqrt(2*1.7*std::max(0.0,minDistance-0.5)); // 1.7 is max acccleration of the car
+        double minSafeLidarVelocity = sqrt(2*1.7*std::max(0.0,minDistance-0.5));
+        double minSafeRoadVelocity = this->road.maxium_speed_for_car(carLocation);
+        ROS_INFO("Road Speed: %s",std::to_string(minSafeRoadVelocity).c_str());
+        return min(minSafeRoadVelocity,minSafeLidarVelocity);
       }
       return 0;
     }
 
     void followRoad(Point currentCarLocation){
       double desiredSteeringAngle = 0;
-      double desiredSpeed = this->speed;
+      double desiredSpeed = 0;
 
 
       if(drivingState == 0){
         std::vector<int> closestLines = this->road.closestLineIndexes(currentCarLocation);
-        Point closestPoint = this->road.roadLines.at(closestLines.at(0)).getClosestPointOnRoad(currentCarLocation);
-        Point secondClosestPoint = this->road.roadLines.at(closestLines.at(1)).getClosestPointOnRoad(currentCarLocation);
-        desiredSteeringAngle = steering_angle_from_points(currentCarLocation,closestPoint,secondClosestPoint);
-        desiredSpeed = safeSpeedToFollowAt();
-        long currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-        if(desiredSpeed >=1.3){
-          actionTimer = 0;
-        }
-        if(desiredSpeed<3 && lidar != nullptr){
-          actionTimer += currentTime -timeOfLastCall;
-          if(actionTimer>wait_time){
-            actionTimer=0;
-            drivingState = 1;
-            setSwitchLaneInformation(currentCarLocation);
+        if(closestLines.size()>=2){
+          Point closestPoint = this->road.roadLines.at(closestLines.at(0)).getClosestPointOnRoad(currentCarLocation);
+          Point secondClosestPoint = this->road.roadLines.at(closestLines.at(1)).getClosestPointOnRoad(currentCarLocation);
+          desiredSteeringAngle = steering_angle_from_points(currentCarLocation,closestPoint,secondClosestPoint);
+          desiredSpeed = safeSpeedToFollowAt(currentCarLocation);
+          long currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+          if(desiredSpeed >=1.3){
+            actionTimer = 0;
+          }
+          if(desiredSpeed<3 && lidar != nullptr){
+            actionTimer += currentTime -timeOfLastCall;
+            if(actionTimer>wait_time){
+              // actionTimer=0;
+              // drivingState = 1;
+              // setSwitchLaneInformation(currentCarLocation);
+            }
           }
         }
       }
@@ -314,7 +318,7 @@ class SampleOvertaking{
           drivingState = 0;
         }
       }
-      ROS_INFO("Driving State: %s",std::to_string(drivingState).c_str());
+      // ROS_INFO("Driving State: %s",std::to_string(drivingState).c_str());
       ackermann_msgs::AckermannDriveStamped drive_st_msg;
       ackermann_msgs::AckermannDrive drive_msg;
       drive_msg.steering_angle = desiredSteeringAngle;
