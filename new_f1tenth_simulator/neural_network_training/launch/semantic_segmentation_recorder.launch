@@ -1,0 +1,5 @@
+<launch>
+    <rosparam command="load" file="$(find semantic_segmentation_recorder)/settings.yaml"/>
+    <node pkg="semantic_segmentation_recorder" name="semantic_segmentation_recorder" type="semantic_segmentation_recorder">
+    </node>
+</launch>

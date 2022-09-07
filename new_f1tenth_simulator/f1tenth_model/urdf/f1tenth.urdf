@@ -1,6 +1,7 @@
 <?xml version='1.0'?>
 <sdf version="1.5">
   <model name="f1tenth_car">
+    <pose>0.1 0 0 0 0 0</pose>
     <link name="base">
       <pose>0 0 .05 0 0 0</pose>
         <inertial>
@@ -111,13 +112,13 @@
               <baseline>0.1</baseline>
               <alwaysOn>true</alwaysOn>
               <updateRate>0.0</updateRate>
-              <cameraName>kinect_test</cameraName>
+              <cameraName>f1tenth_camera</cameraName>
               <imageTopicName>/camera/color/image_raw</imageTopicName>
               <cameraInfoTopicName>/camera/color/camera_info</cameraInfoTopicName>
-              <depthImageTopicName>/3d_image/image_raw_depth</depthImageTopicName>
-              <depthImageInfoTopicName>/3d_image/camera_info</depthImageInfoTopicName>
+              <depthImageTopicName>/camera/aligned_depth_to_color/image_raw</depthImageTopicName>
+              <depthImageInfoTopicName>/camera/aligned_depth_to_color/camera_info</depthImageInfoTopicName>
               <pointCloudTopicName>/3d_image/3d_cloud</pointCloudTopicName>
-              <frameName>kinect_body</frameName>
+              <frameName>map</frameName>
               <pointCloudCutoff>0.1</pointCloudCutoff>
               <pointCloudCutoffMax>100.0</pointCloudCutoffMax>
           </plugin>

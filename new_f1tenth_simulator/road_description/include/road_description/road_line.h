@@ -11,6 +11,7 @@ class RoadLine{
         bool yellowLine = false;
         bool visible = true;
         bool enableInteractions = true;
+        bool connected_at_ends = false;
         int visualTagIndex = 0;
         std::vector<Point> points;
         std::vector<int> roadSegmentIndexVector; // Index of road segment for corresponding point in point vector
@@ -57,6 +58,7 @@ class RoadLine{
             Point startOfFirst = first.getPointXLengthInLine(0);
             Point endOfLast = last.getPointXLengthInLine(last.getLengthOfSegment());
             bool connectedEnds = abs(startOfFirst.x-endOfLast.x)<0.1 && abs(startOfFirst.y-endOfLast.y)<0.1;
+            this->connected_at_ends=connectedEnds;
             if(connectedEnds){
                 for(size_t i=0; i<roadSegments.size();i++){
                     double minVelocity = std::numeric_limits<double>::max();
@@ -321,7 +323,38 @@ class RoadLine{
             }
             return sqrt(CONSTANT_FOR_MAX_TURNING * closestRoadSegment.radiusOfCurvature());
         }
-    
+        
+        bool secondPointInFrontOfFirst(Point first, Point second){
+            int firstCarClosestPointIndex = getClosestPointIndex(first);
+            int secondCarClosestPointIndex = getClosestPointIndex(second);
+
+            // see if car is following the direction of the array or opposite
+            bool followsDirectionOfArray = differenceInPointAngles(first.rotation,this->points.at(firstCarClosestPointIndex).rotation)<M_PI_2;
+
+            if(!this->connected_at_ends){
+                if(secondCarClosestPointIndex>=firstCarClosestPointIndex && followsDirectionOfArray){
+                    return true;
+                }else if(secondCarClosestPointIndex<firstCarClosestPointIndex && !followsDirectionOfArray){
+                    return true;
+                }
+                return false;
+            }else{
+                // If array looked like | | | | F \ \ \ \ S | | | |
+                // where F is first point and S is the second point
+                // inner distance is \ \ \ \
+                // outer distance is | | | | ... | | | |
+                int innerDistance = secondCarClosestPointIndex - firstCarClosestPointIndex;
+                int outerDistance = firstCarClosestPointIndex + (this->points.size()-1 - secondCarClosestPointIndex);
+                if(followsDirectionOfArray && innerDistance < outerDistance){
+                    return true;
+                }
+                if(!followsDirectionOfArray && outerDistance < innerDistance){
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
     private:
         double distanceBetweenPoints(Point first,Point second){
           return  sqrt(pow((first.x-second.x),2) + pow((first.y-second.y),2));

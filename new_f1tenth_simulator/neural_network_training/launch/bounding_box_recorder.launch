@@ -1,0 +1,5 @@
+<launch>
+    <rosparam command="load" file="$(find bounding_box_recorder)/config/bounding_box_recorder.yaml"/>
+    <node pkg="bounding_box_recorder" name="bounding_box_recorder" type="bounding_box_recorder">
+    </node>
+</launch>

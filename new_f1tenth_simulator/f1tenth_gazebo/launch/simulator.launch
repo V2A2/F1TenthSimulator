@@ -82,21 +82,21 @@
     </node>
   </group>-->
   <!-- Blue Car -->
-  <group ns="blue_car_group">
+  <!--<group ns="blue_car_group">
     <node pkg="sample_lane_follower_node" name="blue_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="blue_car" />
       <param name="/nav_drive_topic" type="str" value="/blue_car/nav" />
       <param name="speed" type="double" value="1.0" />
     </node>
-  </group>
+  </group>-->
   <!-- Black Car -->
-  <group ns="black_car_group">
+  <!--<group ns="black_car_group">
     <node pkg="sample_lane_follower_node" name="black_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="black_car" />
       <param name="/nav_drive_topic" type="str" value="/black_car/nav" />
       <param name="speed" type="double" value="1.0" />
     </node>
-  </group>
+  </group>-->
   <!-- Yellow Car -->
   <group ns="yellow_car_group">
     <node pkg="sample_lane_follower_node" name="yellow_car_lane_follower" type="sample_lane_follower_node">
