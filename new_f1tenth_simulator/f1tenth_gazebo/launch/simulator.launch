@@ -8,14 +8,14 @@
     <arg name="debug" value="false"/>
   </include>
   <!-- Custom Cameras -->
-  <!-- <rosparam command="load" file="$(find f1tenth_semantic_segmentation)/settings.yaml"/> -->
+  <rosparam command="load" file="$(find f1tenth_semantic_segmentation)/settings.yaml"/>
   <!-- Test Car  -->
-  <!-- <group ns="test_car_group">
+  <group ns="test_car_group">
     <node pkg="f1tenth_semantic_segmentation" name="main_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
       <param name="camera_topic" type="str" value="/camera/color/image_raw" />
       <param name="publish_topic" type="str" value="/semantic_segmentation/car_output" />
     </node>
-  </group> -->
+  </group>
   <!-- Red Car -->
   <!-- <group ns="red_car_group">
     <node pkg="f1tenth_semantic_segmentation" name="red_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
@@ -74,29 +74,29 @@
     </node>
   </group> -->
   <!-- Red Car -->
-  <!--<group ns="red_car_group">
+  <group ns="red_car_group">
     <node pkg="sample_lane_follower_node" name="red_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="red_car" />
       <param name="/nav_drive_topic" type="str" value="/red_car/nav" />
       <param name="speed" type="double" value="1.0" />
     </node>
-  </group>-->
+  </group>
   <!-- Blue Car -->
-  <!--<group ns="blue_car_group">
+  <group ns="blue_car_group">
     <node pkg="sample_lane_follower_node" name="blue_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="blue_car" />
       <param name="/nav_drive_topic" type="str" value="/blue_car/nav" />
       <param name="speed" type="double" value="1.0" />
     </node>
-  </group>-->
+  </group>
   <!-- Black Car -->
-  <!--<group ns="black_car_group">
+  <group ns="black_car_group">
     <node pkg="sample_lane_follower_node" name="black_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="black_car" />
       <param name="/nav_drive_topic" type="str" value="/black_car/nav" />
       <param name="speed" type="double" value="1.0" />
     </node>
-  </group>-->
+  </group>
   <!-- Yellow Car -->
   <group ns="yellow_car_group">
     <node pkg="sample_lane_follower_node" name="yellow_car_lane_follower" type="sample_lane_follower_node">

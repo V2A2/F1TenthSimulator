@@ -88,5 +88,29 @@ class RoadSegment{
             }
             return 0;
         }
+        Point getEndPoint(){
+            Point end;
+            end.z = this->z;
+            if(classification == 0){
+                end.x = x + param1 * cos(param2);
+                end.y = y + param1 * sin(param2);
+                end.rotation = param2;
+            }
+            if(classification == 1){
+                end.x = x + param1 * cos(param3);
+                end.y = y + param1 * sin(param3);
+                end.rotation = param3+ M_PI/2;
+                if(param2>param3){
+                    end.rotation = param3 - M_PI/2;
+                }
+                while(end.rotation<0){
+                    end.rotation+= 2*M_PI;
+                }
+                while(end.rotation>2*M_PI){
+                    end.rotation-= 2*M_PI;
+                }
+            }
+            return end;
+        }
 };
 #endif

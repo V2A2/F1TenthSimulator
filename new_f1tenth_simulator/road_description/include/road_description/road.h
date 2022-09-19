@@ -7,8 +7,9 @@
 class Road{
     public:
     std::vector<RoadLine> roadLines;
-    double DISTANCE_TO_LEAVE_BETWEEN_CARS = 0.8;
-    double GOOD_DECELERATION_CONSTANT = 1.7 * 0.7;
+    double DISTANCE_TO_LEAVE_BETWEEN_CARS = 1.2;
+    double GOOD_DECELERATION_CONSTANT = 1.7 * 0.6;
+    double MAX_VELOCITY = 3;
     Road(){
       
     }
@@ -133,7 +134,7 @@ class Road{
       std::vector<int> closest_lane_lines_indicies = closestLineIndexes(car_location);
       RoadLine firstLine = this->roadLines.at(closest_lane_lines_indicies.at(0));
       RoadLine secondLine = this->roadLines.at(closest_lane_lines_indicies.at(1));
-      return min(firstLine.getFastestSpeedAtCurrentCarPoint(car_location),secondLine.getFastestSpeedAtCurrentCarPoint(car_location));
+      return min(MAX_VELOCITY,min(firstLine.getFastestSpeedAtCurrentCarPoint(car_location),secondLine.getFastestSpeedAtCurrentCarPoint(car_location)));
     }
 
     // adapt this function to later consider when cars are turning lanes
@@ -173,7 +174,7 @@ class Road{
             }
           }
       }
-      return min_total_velocity;
+      return min(min_total_velocity,MAX_VELOCITY);
     }
     
     std::string getRoadModel(){

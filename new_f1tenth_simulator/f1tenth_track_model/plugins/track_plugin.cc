@@ -9,7 +9,7 @@ class TrackPlugin : public WorldPlugin
 {
   public: void Load(physics::WorldPtr _parent, sdf::ElementPtr _sdf)
   {
-    Road road = get_road(2);
+    Road road = get_default_road();
     
     sdf::SDF sphereSDF;
     sphereSDF.SetFromString(road.getRoadModel());

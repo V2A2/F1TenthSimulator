@@ -18,7 +18,7 @@ class RoadLine{
         std::vector<double> distanceInSegmentVector;
         double default_resolution_for_point_map = 0.01;
         double default_lane_thickness = 0.0254;
-        double CONSTANT_FOR_MAX_TURNING = 1; // some proportion of coefficient of friction times gravitational accaleration
+        double CONSTANT_FOR_MAX_TURNING = 0.7; // some proportion of coefficient of friction times gravitational accaleration
         double MAX_CAR_DECELERATION = 1.7;
         std::vector<double> roadSegmentEndVelocities;
 
@@ -104,7 +104,7 @@ class RoadLine{
                 for(size_t i=0; i<roadSegments.size()-1;i++){
                     double minVelocity = std::numeric_limits<double>::max();
                     double runningDistance = 0;
-                    for( size_t j = i+1;j<roadSegments.size();j++){
+                    for( size_t j = i+1;j<roadSegments.size()-1;j++){
                         RoadSegment futureRoadSegment = roadSegments.at(j);
                         Point firstPointInFutureSegment = futureRoadSegment.getPointXLengthInLine(0);
                         int closestPointIndex = getClosestPointIndexOnSegment(firstPointInFutureSegment,j);

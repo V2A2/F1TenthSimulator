@@ -18,7 +18,7 @@ class SampleLaneFollower{
     ros::Subscriber model_sub;
     std::string carName = "";
     double speed = 0;
-    Road road = get_road(2);
+    Road road = get_default_road();
     public:
     SampleLaneFollower(){
         n = ros::NodeHandle("~");

@@ -19,7 +19,7 @@ class SampleOvertaking{
     ros::Subscriber model_sub;
     ros::Subscriber scan_sub;
     std::string carName = "";
-    Road road = get_road(2);
+    Road road = get_default_road();
     std::vector<int> overtakingLane;
     std::vector<int> previousLane;
     std::vector<float> filteredLidarReadings;

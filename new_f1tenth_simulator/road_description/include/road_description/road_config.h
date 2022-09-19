@@ -1,11 +1,11 @@
-#include <road_description/road.h>
+#include <road_description/road_builder.h>
 #include <vector>
 #include <cmath>
 
 #ifndef cpp_road_config
 Road get_road(int trackNumber);
 Road get_default_road(){
-    return get_road(2);
+    return get_road(5);
 }
 Road get_road(int trackNumber){
     if(trackNumber == 1){
@@ -171,6 +171,77 @@ Road get_road(int trackNumber){
         roadLines.push_back(innerWhite);
         roadLines.push_back(outerWhite);
         return Road(roadLines,false);
+    }
+    if(trackNumber == 3){
+        RoadBuilder roadBuilder;
+        roadBuilder.setNumberOfLanes(2);
+        int firstLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        int secondLine = RoadBuilder::YELLOW_LINE | RoadBuilder::SOLID_LINE;
+        int thirdLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        roadBuilder.addLineDescription(firstLine);
+        roadBuilder.addLineDescription(secondLine);
+        roadBuilder.addLineDescription(thirdLine);
+        roadBuilder.setStartingPoint(0,0,0,0);
+        roadBuilder.addStraightLine(5);
+        roadBuilder.addCurveFromRadiusOfCurvature(5,8,true);
+        roadBuilder.addStraightLine(8);
+        roadBuilder.addCurveFromRadiusOfCurvature(5,6,false);
+        roadBuilder.addStraightLine(6);
+        roadBuilder.addCurveFromRadiusOfCurvature(5,5,true);
+        roadBuilder.addStraightLine(5);
+        roadBuilder.addCurveFromRadiusOfCurvature(5,4,false);
+        roadBuilder.addStraightLine(4);
+        roadBuilder.addCurveFromRadiusOfCurvature(2,2,true);
+        roadBuilder.addStraightLine(2);
+        roadBuilder.addCurveFromRadiusOfCurvature(1,1,false);
+        roadBuilder.addStraightLine(2);
+        roadBuilder.addCurveFromRadiusOfCurvature(0.8,0.8,true);
+        roadBuilder.addStraightLine(2);
+        roadBuilder.addCurveFromRadiusOfCurvature(0.5,0.5,false);
+        roadBuilder.addStraightLine(20);
+        return roadBuilder.getRoad();
+    }
+    if(trackNumber == 4){
+        //ESTIMATION FOR CURRENT TRACK
+        RoadBuilder roadBuilder;
+        roadBuilder.setNumberOfLanes(2);
+        int firstLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        int secondLine = RoadBuilder::YELLOW_LINE | RoadBuilder::SOLID_LINE;
+        int thirdLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        roadBuilder.addLineDescription(firstLine);
+        roadBuilder.addLineDescription(secondLine);
+        roadBuilder.addLineDescription(thirdLine);
+        roadBuilder.setStartingPoint(0,0,0,0);
+        roadBuilder.addStraightLine(1.4224);
+        roadBuilder.addCurveFromRadiusOfCurvature(0.889 * M_PI_2,0.889,true);
+        roadBuilder.addStraightLine(0.1778);
+        roadBuilder.addCurveFromRadiusOfCurvature(0.889 * M_PI_2,0.889,true);
+        roadBuilder.addStraightLine(1.4224);
+        roadBuilder.addCurveFromRadiusOfCurvature(0.889 * M_PI_2,0.889,true);
+        roadBuilder.addStraightLine(0.1778);
+        roadBuilder.addCurveFromRadiusOfCurvature(0.889 * M_PI_2,0.889,true);
+        return roadBuilder.getRoad();
+    }
+    if(trackNumber == 5){
+        //ESTIMATION FOR OLD TRACK
+        RoadBuilder roadBuilder;
+        roadBuilder.setNumberOfLanes(2);
+        int firstLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        int secondLine = RoadBuilder::YELLOW_LINE | RoadBuilder::SOLID_LINE;
+        int thirdLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        roadBuilder.addLineDescription(firstLine);
+        roadBuilder.addLineDescription(secondLine);
+        roadBuilder.addLineDescription(thirdLine);
+        roadBuilder.setStartingPoint(0,0,0,0);
+        roadBuilder.addStraightLine(2.7);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.15 * M_PI_2,1.15,true);
+        roadBuilder.addStraightLine(1.55);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.15 * M_PI_2,1.15,true);
+        roadBuilder.addStraightLine(2.7);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.15 * M_PI_2,1.15,true);
+        roadBuilder.addStraightLine(1.55);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.15 * M_PI_2,1.15,true);
+        return roadBuilder.getRoad();
     }
     return Road();
 }
