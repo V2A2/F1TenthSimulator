@@ -20,6 +20,7 @@ class RoadLine{
         double default_lane_thickness = 0.0254;
         double CONSTANT_FOR_MAX_TURNING = 0.7; // some proportion of coefficient of friction times gravitational accaleration
         double MAX_CAR_DECELERATION = 1.7;
+        double default_resolution_for_display = 0.1;
         std::vector<double> roadSegmentEndVelocities;
 
         RoadLine(std::vector<RoadSegment>segments,int elementTag){
@@ -253,7 +254,7 @@ class RoadLine{
         
         std::string getRoadSDFStringYellowLine(){
             std::string roadString = "";
-            std::vector<Point> pointsToDisplay = getRoadPoints(0.1);
+            std::vector<Point> pointsToDisplay = getRoadPoints(default_resolution_for_display);
             for (int index = 0; index<static_cast<int>(pointsToDisplay.size());index++){
                 Point point = pointsToDisplay.at(index);
                 roadString+="<visual name ='visual"+ std::to_string(this->visualTagIndex)+"-"+std::to_string(index)+"'><pose>";
@@ -265,7 +266,7 @@ class RoadLine{
         
         std::string getRoadSDFStringWhiteLine(){
             std::string roadString = "";
-            std::vector<Point> pointsToDisplay = getRoadPoints(0.1);
+            std::vector<Point> pointsToDisplay = getRoadPoints(default_resolution_for_display);
             for (int index = 0; index<static_cast<int>(pointsToDisplay.size());index++){
                 Point point = pointsToDisplay.at(index);
                 roadString+="<visual name ='visual"+ std::to_string(this->visualTagIndex)+"-"+std::to_string(index)+"'><pose>";

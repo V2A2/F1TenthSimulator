@@ -5,7 +5,7 @@
 #ifndef cpp_road_config
 Road get_road(int trackNumber);
 Road get_default_road(){
-    return get_road(5);
+    return get_road(6);
 }
 Road get_road(int trackNumber){
     if(trackNumber == 1){
@@ -242,6 +242,71 @@ Road get_road(int trackNumber){
         roadBuilder.addStraightLine(1.55);
         roadBuilder.addCurveFromRadiusOfCurvature(1.15 * M_PI_2,1.15,true);
         return roadBuilder.getRoad();
+    }
+    if(trackNumber= 6){
+        RoadSegment line1(0.92,     0.92+0.46,   0,  0,  1.36,   M_PI_2, 0);
+        RoadSegment circle1(0.92+0.46,  .92+2.28-0.46,   0,  1,  0.46,  M_PI,   M_PI/2);
+        RoadSegment line2(0.92+0.46,3.20,0,0,0.2,0,0);
+        RoadSegment circle2(0.92+1-0.34,  3.2-0.34,   0,  1,  0.34,  M_PI/2,   0);
+        RoadSegment line3(0.92+1,3.20-0.34,0,0,1.54,-M_PI_2,0);
+        RoadSegment circle3(0.92+1-0.40,  0.92+0.40,   0,  1,  0.40,  0,   -M_PI_2);
+        RoadSegment line4(0.92+1-0.4,0.92,0,0,0.14,-M_PI,0);
+        RoadSegment circle4(0.92+0.46,  0.92+0.46,   0,  1,  0.46,  3*M_PI / 2,   M_PI);
+        std::vector<RoadSegment> innerWhiteSegments;
+        innerWhiteSegments.push_back(line1);
+        innerWhiteSegments.push_back(circle1);
+        innerWhiteSegments.push_back(line2);
+        innerWhiteSegments.push_back(circle2);
+        innerWhiteSegments.push_back(line3);
+        innerWhiteSegments.push_back(circle3);
+        innerWhiteSegments.push_back(line4);
+        innerWhiteSegments.push_back(circle4);
+        RoadLine innerWhite(innerWhiteSegments,1);
+        innerWhite.default_resolution_for_display = 0.05;
+        RoadSegment yline1(0.46,     0.46+0.60,   0,  0,  2.0,   M_PI_2, 0);
+        RoadSegment ycircle1(0.46+0.60,  .46+3.20-0.60,   0,  1,  0.60,  M_PI,   M_PI/2);
+        RoadSegment yline2(0.46+0.60,0.46+3.20,0,0,0.8,0,0);
+        RoadSegment ycircle2(0.46+1.92-0.50,  .46+3.2-0.50,   0,  1,  0.50,  M_PI/2,   0);
+        RoadSegment yline3(0.46+1.92,0.46+3.20-0.50,0,0,2.2,-M_PI_2,0);
+        RoadSegment ycircle3(0.46+1.92-0.50,  0.46+0.50,   0,  1,  0.50,  0,   -M_PI_2);
+        RoadSegment yline4(0.46+1.92-0.5,0.46,0,0,0.8,-M_PI,0);
+        RoadSegment ycircle4(0.46+0.60,  0.46+0.60,   0,  1,  0.60,  3*M_PI / 2,   M_PI);
+        std::vector<RoadSegment> yellowSegments;
+        yellowSegments.push_back(yline1);
+        yellowSegments.push_back(ycircle1);
+        yellowSegments.push_back(yline2);
+        yellowSegments.push_back(ycircle2);
+        yellowSegments.push_back(yline3);
+        yellowSegments.push_back(ycircle3);
+        yellowSegments.push_back(yline4);
+        yellowSegments.push_back(ycircle4);
+        RoadLine yellow(yellowSegments,false,true,0);
+        yellow.default_resolution_for_display = 0.05;
+        std::vector<RoadSegment> outerWhiteSegments;
+        RoadSegment oline1(0,     0+0.76,   0,  0,  2.6,   M_PI_2, 0);
+        RoadSegment ocircle1(0+0.76,  0+4.12-0.76,   0,  1,  0.76,  M_PI,   M_PI/2);
+        RoadSegment oline2(0+0.76,0+4.12,0,0,1.32,0,0);
+        RoadSegment ocircle2(0+2.84-0.76,  0+4.12-0.76,   0,  1,  0.76,  M_PI/2,   0);
+        RoadSegment oline3(0+2.84,0+4.12-0.76,0,0,2.6,-M_PI_2,0);
+        RoadSegment ocircle3(0+2.84-0.76,  0+0.76,   0,  1,  0.76,  0,   -M_PI_2);
+        RoadSegment oline4(0+2.84-0.76,0,0,0,1.32,-M_PI,0);
+        RoadSegment ocircle4(0+0.76,  0+0.76,   0,  1,  0.76,  3*M_PI / 2,   M_PI);
+        outerWhiteSegments.push_back(oline1);
+        outerWhiteSegments.push_back(ocircle1);
+        outerWhiteSegments.push_back(oline2);
+        outerWhiteSegments.push_back(ocircle2);
+        outerWhiteSegments.push_back(oline3);
+        outerWhiteSegments.push_back(ocircle3);
+        outerWhiteSegments.push_back(oline4);
+        outerWhiteSegments.push_back(ocircle4);
+        RoadLine outerWhite(outerWhiteSegments,2);
+        outerWhite.default_resolution_for_display = 0.05;
+        std::vector<RoadLine> roadLines;
+        roadLines.push_back(yellow);
+        roadLines.push_back(innerWhite);
+        roadLines.push_back(outerWhite);
+        Road realTrack(roadLines,false);
+        return realTrack;
     }
     return Road();
 }
