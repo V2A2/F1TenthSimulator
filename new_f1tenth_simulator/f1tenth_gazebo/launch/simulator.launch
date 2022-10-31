@@ -1,4 +1,10 @@
 <launch>
+  <param name="/track_number" type="int" value="7"/>
+  <!-- 2 = medium complexity simulator track -->
+  <!-- 3 = complex simulator track -->
+  <!-- 5 = old track -->
+  <!-- 6 = pixel perfect new track -->
+  <!-- 7 = unseen train set -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch">
     <arg name="world_name" value="$(find f1tenth_gazebo)/worlds/default_track.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     <arg name="paused" value="false"/>
@@ -61,7 +67,7 @@
     <node pkg="sample_lane_follower_node" name="main_car_lane_follower" type="sample_lane_follower_node">
       <param name="car_name" type="str" value="f1tenth_car" />
       <param name="nav_drive_topic" type="str" value="/vesc/high_level/ackermann_cmd_mux/input/nav_0" />
-      <param name="speed" type="double" value="1.2" />
+      <param name="speed" type="double" value="0.7" />
     </node>
   </group> -->
   <!-- <group ns="test_car_group">
@@ -78,7 +84,7 @@
     <node pkg="sample_lane_follower_node" name="red_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="red_car" />
       <param name="/nav_drive_topic" type="str" value="/red_car/nav" />
-      <param name="speed" type="double" value="0.7" />
+      <param name="speed" type="double" value="0.5" />
     </node>
   </group>
   <!-- Blue Car -->
@@ -86,7 +92,7 @@
     <node pkg="sample_lane_follower_node" name="blue_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="blue_car" />
       <param name="/nav_drive_topic" type="str" value="/blue_car/nav" />
-      <param name="speed" type="double" value="0.7" />
+      <param name="speed" type="double" value="0.5" />
     </node>
   </group>
   <!-- Black Car -->
@@ -94,7 +100,7 @@
     <node pkg="sample_lane_follower_node" name="black_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="black_car" />
       <param name="/nav_drive_topic" type="str" value="/black_car/nav" />
-      <param name="speed" type="double" value="0.7" />
+      <param name="speed" type="double" value="0.5" />
     </node>
   </group>
   <!-- Yellow Car -->
@@ -102,7 +108,7 @@
     <node pkg="sample_lane_follower_node" name="yellow_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="yellow_car" />
       <param name="/nav_drive_topic" type="str" value="/yellow_car/nav" />
-      <param name="speed" type="double" value="0.7" />
+      <param name="speed" type="double" value="0.5" />
     </node>
   </group>
   <!-- Clear Car -->
@@ -110,7 +116,7 @@
     <node pkg="sample_lane_follower_node" name="clear_car_lane_follower" type="sample_lane_follower_node">
       <param name="/car_name" type="str" value="clear_car" />
       <param name="/nav_drive_topic" type="str" value="/clear_car/nav" />
-      <param name="speed" type="double" value="0.7" />
+      <param name="speed" type="double" value="0.5" />
     </node>
   </group>
    <!-- <include file="$(find f1tenth_object_tracking)/launch/f1tenth_object_tracking.launch" /> -->

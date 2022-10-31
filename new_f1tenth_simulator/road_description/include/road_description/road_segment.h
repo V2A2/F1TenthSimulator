@@ -2,8 +2,6 @@
 #include <cmath>
 #ifndef cpp_road_segment
 
-using namespace std;
-
 class RoadSegment{
     /*
     0:Line calulated by having one endpoint at x,y,z and then have the other endpoint at the end of the vector centered at x,y,z with length param1 and angle param2

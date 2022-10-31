@@ -21,6 +21,9 @@ class RoadLine{
         double CONSTANT_FOR_MAX_TURNING = 0.7; // some proportion of coefficient of friction times gravitational accaleration
         double MAX_CAR_DECELERATION = 1.7;
         double default_resolution_for_display = 0.1;
+        double dotted_line_resolution = 0.6;
+        double straight_line_length = 0.1;
+        double dotted_line_length = 0.2;
         std::vector<double> roadSegmentEndVelocities;
 
         RoadLine(std::vector<RoadSegment>segments,int elementTag){
@@ -259,7 +262,7 @@ class RoadLine{
                 Point point = pointsToDisplay.at(index);
                 roadString+="<visual name ='visual"+ std::to_string(this->visualTagIndex)+"-"+std::to_string(index)+"'><pose>";
                 roadString+= "" +std::to_string(point.x) + " " + std::to_string(point.y) + " " + std::to_string(point.z) + " 0 0 " +std::to_string(point.rotation);
-                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>0.1 "+std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 0.9 0.2 1</emissive></material></visual>";
+                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>"+std::to_string(straight_line_length) + " " + std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 0.9 0.2 1</emissive></material></visual>";
             }
             return roadString;
         }
@@ -271,31 +274,31 @@ class RoadLine{
                 Point point = pointsToDisplay.at(index);
                 roadString+="<visual name ='visual"+ std::to_string(this->visualTagIndex)+"-"+std::to_string(index)+"'><pose>";
                 roadString+= "" +std::to_string(point.x) + " " + std::to_string(point.y) + " " + std::to_string(point.z) + " 0 0 " +std::to_string(point.rotation);
-                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>0.1 "+std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 1 1 1</emissive></material></visual>";
+                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>"+std::to_string(straight_line_length) + " "+ std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 1 1 1</emissive></material></visual>";
             }
             return roadString;
         }
         
         std::string getRoadSDFStringDottedYellowLine(){
             std::string roadString = "";
-            std::vector<Point> pointsToDisplay = getRoadPoints(0.3);
+            std::vector<Point> pointsToDisplay = getRoadPoints(dotted_line_resolution);
             for (int index = 0; index<static_cast<int>(pointsToDisplay.size());index++){
                 Point point = pointsToDisplay.at(index);
                 roadString+="<visual name ='visual"+ std::to_string(this->visualTagIndex)+"-"+std::to_string(index)+"'><pose>";
                 roadString+= "" +std::to_string(point.x) + " " + std::to_string(point.y) + " " + std::to_string(point.z) + " 0 0 " +std::to_string(point.rotation);
-                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>0.1 "+std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 0.9 0.2 1</emissive></material></visual>";
+                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>"+std::to_string(dotted_line_length) + " " +std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 0.9 0.2 1</emissive></material></visual>";
             }
             return roadString;
         }
         
         std::string getRoadSDFStringDottedWhiteLine(){
             std::string roadString = "";
-            std::vector<Point> pointsToDisplay = getRoadPoints(0.3);
+            std::vector<Point> pointsToDisplay = getRoadPoints(dotted_line_resolution);
             for (int index = 0; index<static_cast<int>(pointsToDisplay.size());index++){
                 Point point = pointsToDisplay.at(index);
                 roadString+="<visual name ='visual"+ std::to_string(this->visualTagIndex)+"-"+std::to_string(index)+"'><pose>";
                 roadString+= "" +std::to_string(point.x) + " " + std::to_string(point.y) + " " + std::to_string(point.z) + " 0 0 " +std::to_string(point.rotation);
-                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>0.1 "+std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 1 1 1</emissive></material></visual>";
+                roadString+="</pose><geometry><plane><normal>0 0 1</normal> <size>"+std::to_string(dotted_line_length) + " " +std::to_string(default_lane_thickness)+"</size></plane></geometry><material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 1 1 1</emissive></material></visual>";
             }
 
             return roadString;

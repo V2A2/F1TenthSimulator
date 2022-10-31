@@ -129,12 +129,13 @@ class Road{
           return  sqrt(pow((first.x-second.x),2) + pow((first.y-second.y),2));
     }
     
-    // later adapt to consider limitations in camera
+    // later adapt to consider limitations in camera ( Should not slow down if car in front of it is out of view)
+    //Used to Train NN
     double maxium_speed_for_car(Point car_location){
       std::vector<int> closest_lane_lines_indicies = closestLineIndexes(car_location);
       RoadLine firstLine = this->roadLines.at(closest_lane_lines_indicies.at(0));
       RoadLine secondLine = this->roadLines.at(closest_lane_lines_indicies.at(1));
-      return min(MAX_VELOCITY,min(firstLine.getFastestSpeedAtCurrentCarPoint(car_location),secondLine.getFastestSpeedAtCurrentCarPoint(car_location)));
+      return std::min(MAX_VELOCITY,std::min(firstLine.getFastestSpeedAtCurrentCarPoint(car_location),secondLine.getFastestSpeedAtCurrentCarPoint(car_location)));
     }
 
     // adapt this function to later consider when cars are turning lanes
@@ -174,7 +175,7 @@ class Road{
             }
           }
       }
-      return min(min_total_velocity,MAX_VELOCITY);
+      return std::min(min_total_velocity,MAX_VELOCITY);
     }
     
     std::string getRoadModel(){
@@ -187,7 +188,7 @@ class Road{
         roadString+="</link></model></sdf>";
         return roadString;
     }
-    
+    //Used to Train NN
     double steering_angle_from_point(Point car){
       std::vector<int> closestLines = closestLineIndexes(car);
       Point closestPoint = roadLines.at(closestLines.at(0)).getClosestPointOnRoad(car);
@@ -244,8 +245,52 @@ class Road{
       }
       return angleToAdjustToCurvature + angleToAdjustForCentering;
     }
+    //Used to Train NN
+    bool isCarInLane(Point car){
+      std::vector<int> closestLineIndexes = this->closestLineIndexes(car);
+      RoadLine first = this->roadLines.at(closestLineIndexes.at(0));
+      RoadLine second = this->roadLines.at(closestLineIndexes.at(1));
+      Point firstPoint = first.getClosestPointOnRoad(car);
+      Point secondPoint = second.getClosestPointOnRoad(car);
+      return isCarInLane(car,firstPoint,secondPoint,0.2);
+    }
+    bool isCarInLaneDifferentRatio(Point car,double ratio){
+      std::vector<int> closestLineIndexes = this->closestLineIndexes(car);
+      RoadLine first = this->roadLines.at(closestLineIndexes.at(0));
+      RoadLine second = this->roadLines.at(closestLineIndexes.at(1));
+      Point firstPoint = first.getClosestPointOnRoad(car);
+      Point secondPoint = second.getClosestPointOnRoad(car);
+      return isCarInLane(car,firstPoint,secondPoint,ratio);
+    }
+    //Used to Train NN
+    bool has_left_lane(Point car){
+      return getLanesToTheLeftOfPoint(car).size()>1;
+    }
+    //Used to Train NN
+    bool has_right_lane(Point car){
+      return getLanesToTheRightOfPoint(car).size()>1;
+    }
     
-  private:
+    bool isCarInLane(Point car,Point firstPoint,Point secondPoint, double ratio = 0.2){
+        double angleToRotateBy =-1 * (car.rotation - M_PI_2);
+
+        double pointXBeforeRotationFirst = firstPoint.x - car.x;
+        double pointYBeforeRotationFirst = firstPoint.y - car.y;
+        double newXForPointFirst = pointXBeforeRotationFirst * cos(angleToRotateBy) - pointYBeforeRotationFirst *sin(angleToRotateBy);
+        double newYForPointFirst = pointYBeforeRotationFirst * cos(angleToRotateBy) + pointXBeforeRotationFirst *sin(angleToRotateBy);
+
+        double pointXBeforeRotationSecond = secondPoint.x - car.x;
+        double pointYBeforeRotationSecond = secondPoint.y - car.y;
+        double newXForPointSecond = pointXBeforeRotationSecond * cos(angleToRotateBy) - pointYBeforeRotationSecond *sin(angleToRotateBy);
+        double newYForPointSecond = pointYBeforeRotationSecond * cos(angleToRotateBy) + pointXBeforeRotationSecond *sin(angleToRotateBy);
+
+        double distanceFromCenter = abs((newXForPointFirst + newXForPointSecond) / 2);
+        double distanceBetweenPoints = abs(newXForPointFirst) + abs(newXForPointSecond);
+        return (distanceFromCenter / distanceBetweenPoints) < ratio; // find good ratio
+      }
+
+    private:
+    
     double linear_distance_stearing_adjustments(Point car, Point firstPoint,Point secondPoint){
       double angleToRotateBy =-1 * (car.rotation - M_PI_2);
       double pointXBeforeRotationFirst = firstPoint.x - car.x;

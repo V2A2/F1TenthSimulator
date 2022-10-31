@@ -21,6 +21,7 @@ class SemanticSegmentation{
     int outputX = 256, outputY=256;
     int inputX = 1280, inputY = 720;
     bool fastMode;
+    bool visualize_topic = false;
     public:
     SemanticSegmentation():image_transport(n) {
         n = ros::NodeHandle("~");
@@ -33,7 +34,7 @@ class SemanticSegmentation{
         image_sub_ = image_transport.subscribe(camera_topic, 1, &SemanticSegmentation::image_callback, this);
          n.getParam("publish_topic", publish_topic);
         image_pub_ = image_transport.advertise(publish_topic, 1);
-
+        n.getParam("/visualize_semantic_segmentation",visualize_topic);
         // //Test
         // namedWindow(TEST_WINDOW);
         // //used for testing
@@ -83,11 +84,14 @@ class SemanticSegmentation{
       Mat cars = blueCarMat |redCarMat | yellowCarMat | clearCarMat | blackCarMat | carMiddleSection | lidarAndAntenna | powerBoard | whitePartOfCar | wheels;
       
       //scaling
-      cars = cars * 2 /256;
-      yellowLaneLines = yellowLaneLines * 3/256;
-      whiteLaneLines = whiteLaneLines * 1/256;
+      cars = cars * 1 /256.0;
+      yellowLaneLines = yellowLaneLines * 2/256.0;
+      whiteLaneLines = whiteLaneLines * 3/256.0;
 
       Mat combinedMat = cars | yellowLaneLines | whiteLaneLines;
+      if(visualize_topic){
+        combinedMat = combinedMat * 80.0;
+      }
       Mat scaledImage;
       cv::resize(combinedMat,scaledImage,Size(outputX,outputY));
       outputMat = combinedMat;

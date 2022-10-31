@@ -1,11 +1,13 @@
 #include <road_description/road_builder.h>
 #include <vector>
 #include <cmath>
-
+#include <ros/param.h>
 #ifndef cpp_road_config
 Road get_road(int trackNumber);
 Road get_default_road(){
-    return get_road(6);
+    int track_number = -1;
+    ros::param::get("/track_number", track_number);
+    return get_road(track_number); // switch to param in f1tenth_gazebo
 }
 Road get_road(int trackNumber){
     if(trackNumber == 1){
@@ -86,7 +88,7 @@ Road get_road(int trackNumber){
         yellowSegments.push_back(line6);
         yellowSegments.push_back(circle11);
         yellowSegments.push_back(circle12);
-        RoadLine yellow(yellowSegments,false,true,0);
+        RoadLine yellow(yellowSegments,true,true,0);
 
         RoadSegment w1line1(-1,0+0.4,0,0,2,0,0);
         RoadSegment w1line2(5,4+0.4,0,0,4,0,0);
@@ -175,30 +177,37 @@ Road get_road(int trackNumber){
     if(trackNumber == 3){
         RoadBuilder roadBuilder;
         roadBuilder.setNumberOfLanes(2);
-        int firstLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
-        int secondLine = RoadBuilder::YELLOW_LINE | RoadBuilder::SOLID_LINE;
-        int thirdLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        int firstLine = RoadBuilder::WHITE_LINE | RoadBuilder::DOTTED_LINE;
+        int secondLine = RoadBuilder::YELLOW_LINE | RoadBuilder::DOTTED_LINE;
+        int thirdLine = RoadBuilder::WHITE_LINE | RoadBuilder::DOTTED_LINE;
         roadBuilder.addLineDescription(firstLine);
         roadBuilder.addLineDescription(secondLine);
         roadBuilder.addLineDescription(thirdLine);
         roadBuilder.setStartingPoint(0,0,0,0);
+        roadBuilder.addStraightLine(2);
+        roadBuilder.addCurveFromRadiusOfCurvature(1 * M_PI,1,true);
         roadBuilder.addStraightLine(5);
-        roadBuilder.addCurveFromRadiusOfCurvature(5,8,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(2 * M_PI,2,false);
         roadBuilder.addStraightLine(8);
-        roadBuilder.addCurveFromRadiusOfCurvature(5,6,false);
-        roadBuilder.addStraightLine(6);
-        roadBuilder.addCurveFromRadiusOfCurvature(5,5,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(3 * M_PI,3,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(2 * M_PI,2,false);
         roadBuilder.addStraightLine(5);
-        roadBuilder.addCurveFromRadiusOfCurvature(5,4,false);
-        roadBuilder.addStraightLine(4);
-        roadBuilder.addCurveFromRadiusOfCurvature(2,2,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.5 * M_PI,1.5,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(10 * M_PI_2,10,false);
+        roadBuilder.addCurveFromRadiusOfCurvature(1 * M_PI_2,1,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(2 * M_PI_2,2,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(3 * M_PI_2,3,false);
+        roadBuilder.addCurveFromRadiusOfCurvature(4 * M_PI_2,4,true);
+        roadBuilder.addStraightLine(21);
+        roadBuilder.addCurveFromRadiusOfCurvature(2 * M_PI_2,2,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(1 * M_PI_2,1,true);
+        roadBuilder.addCurveFromRadiusOfCurvature(1 * M_PI_2,1,false);
+        roadBuilder.addCurveFromRadiusOfCurvature(1 * M_PI_2,1,false);
+        roadBuilder.addStraightLine(1);
+        roadBuilder.addCurveFromRadiusOfCurvature(1 * M_PI,1,true);
+        roadBuilder.addStraightLine(1);
+        roadBuilder.addCurveFromRadiusOfCurvature(1 * M_PI_2,1,false);
         roadBuilder.addStraightLine(2);
-        roadBuilder.addCurveFromRadiusOfCurvature(1,1,false);
-        roadBuilder.addStraightLine(2);
-        roadBuilder.addCurveFromRadiusOfCurvature(0.8,0.8,true);
-        roadBuilder.addStraightLine(2);
-        roadBuilder.addCurveFromRadiusOfCurvature(0.5,0.5,false);
-        roadBuilder.addStraightLine(20);
         return roadBuilder.getRoad();
     }
     if(trackNumber == 4){
@@ -243,7 +252,8 @@ Road get_road(int trackNumber){
         roadBuilder.addCurveFromRadiusOfCurvature(1.15 * M_PI_2,1.15,true);
         return roadBuilder.getRoad();
     }
-    if(trackNumber= 6){
+    if(trackNumber == 6){
+        // More pixel perfect representation of new track
         RoadSegment line1(0.92,     0.92+0.46,   0,  0,  1.36,   M_PI_2, 0);
         RoadSegment circle1(0.92+0.46,  .92+2.28-0.46,   0,  1,  0.46,  M_PI,   M_PI/2);
         RoadSegment line2(0.92+0.46,3.20,0,0,0.2,0,0);
@@ -307,6 +317,26 @@ Road get_road(int trackNumber){
         roadLines.push_back(outerWhite);
         Road realTrack(roadLines,false);
         return realTrack;
+    }
+    if(trackNumber == 7){
+        RoadBuilder roadBuilder;
+        roadBuilder.setNumberOfLanes(2);
+        int firstLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        int secondLine = RoadBuilder::YELLOW_LINE | RoadBuilder::DOTTED_LINE;
+        int thirdLine = RoadBuilder::WHITE_LINE | RoadBuilder::SOLID_LINE;
+        roadBuilder.addLineDescription(firstLine);
+        roadBuilder.addLineDescription(secondLine);
+        roadBuilder.addLineDescription(thirdLine);
+        roadBuilder.setStartingPoint(0,0,0,0);
+        roadBuilder.addStraightLine(5);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.5 * M_PI_2,1.5,true);
+        roadBuilder.addStraightLine(4);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.75 * M_PI_2,1.75,true);
+        roadBuilder.addStraightLine(5);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.5 * M_PI_2,1.5,true);
+        roadBuilder.addStraightLine(4);
+        roadBuilder.addCurveFromRadiusOfCurvature(1.75 * M_PI_2,1.75,true);
+        return roadBuilder.getRoad();
     }
     return Road();
 }

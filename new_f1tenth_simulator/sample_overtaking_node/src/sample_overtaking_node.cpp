@@ -244,7 +244,6 @@ class SampleOvertaking{
         }
         double minSafeLidarVelocity = sqrt(2*1.7*std::max(0.0,minDistance-0.5));
         double minSafeRoadVelocity = this->road.maxium_speed_for_car(carLocation);
-        ROS_INFO("Road Speed: %s",std::to_string(minSafeRoadVelocity).c_str());
         return min(minSafeRoadVelocity,minSafeLidarVelocity);
       }
       return 0;

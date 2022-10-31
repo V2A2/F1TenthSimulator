@@ -76,9 +76,9 @@ namespace gazebo
       if(isinf(angle)){
         angle = 0;
       }
-      double maximum_angle = 0.6;
+      double maximum_angle = 0.9;
       double turning_angle = angle;
-      if(abs(angle)>=maximum_angle){//34 degrees
+      if(abs(angle)>=maximum_angle){//51 degrees
          turning_angle = angle / abs(angle) *maximum_angle;
       }
       (this->model)->GetJointController()->SetJointPosition((this->modelName +"::front_left_joint_turning"), turning_angle);

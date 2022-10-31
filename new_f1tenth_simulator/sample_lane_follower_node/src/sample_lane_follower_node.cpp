@@ -146,14 +146,10 @@ class SampleLaneFollower{
           Point closestPoint = this->road.roadLines.at(closestLines.at(0)).getClosestPointOnRoad(currentCarLocation);
           Point secondClosestPoint = this->road.roadLines.at(closestLines.at(1)).getClosestPointOnRoad(currentCarLocation);
           double desiredSteeringAngle = steering_angle_from_points(currentCarLocation,closestPoint,secondClosestPoint);
-          ROS_INFO("Car Angle %s",std::to_string(desiredSteeringAngle).c_str());
-          int test = 1;
           ackermann_msgs::AckermannDriveStamped drive_st_msg;
           ackermann_msgs::AckermannDrive drive_msg;
           drive_msg.steering_angle = desiredSteeringAngle;
           drive_msg.speed = this->speed;
-          // ROS_INFO("Steering Angle %s",std::to_string(steeringAngle).c_str());
-          // ROS_INFO("Speed %s",std::to_string(carSpeed).c_str());
           drive_st_msg.drive = drive_msg;
           drive_pub.publish(drive_st_msg);
         }
