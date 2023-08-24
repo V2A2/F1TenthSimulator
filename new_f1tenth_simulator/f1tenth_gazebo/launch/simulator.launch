@@ -1,0 +1,123 @@
+<launch>
+  <param name="/track_number" type="int" value="6"/>
+  <!-- 2 = medium complexity simulator track -->
+  <!-- 3 = complex simulator track -->
+  <!-- 5 = old track -->
+  <!-- 6 = pixel perfect new track -->
+  <!-- 7 = unseen train set -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find f1tenth_gazebo)/worlds/default_track.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="recording" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+  <!-- Semantic Segmentation Cameras -->
+  <rosparam command="load" file="$(find f1tenth_semantic_segmentation)/settings.yaml"/>
+  <!-- Test Car  -->
+  <group ns="test_car_group">
+    <node pkg="f1tenth_semantic_segmentation" name="main_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
+      <param name="camera_topic" type="str" value="/camera/color/image_raw" />
+      <param name="publish_topic" type="str" value="/semantic_segmentation/car_output" />
+    </node>
+  </group>
+  <!-- Red Car -->
+  <!-- <group ns="red_car_group">
+    <node pkg="f1tenth_semantic_segmentation" name="red_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
+      <param name="camera_topic" type="str" value="/red_car/camera/color/image_raw" />
+      <param name="publish_topic" type="str" value="/semantic_segmentation/red_car/car_output" />
+    </node>
+  </group> -->
+  <!-- Blue Car -->
+  <!-- <group ns="blue_car_group">
+    <node pkg="f1tenth_semantic_segmentation" name="blue_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
+      <param name="camera_topic" type="str" value="/blue_car/camera/color/image_raw" />
+      <param name="publish_topic" type="str" value="/semantic_segmentation/blue_car/car_output" />
+    </node>
+  </group> -->
+  <!-- Black Car -->
+  <!-- <group ns="black_car_group">
+    <node pkg="f1tenth_semantic_segmentation" name="black_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
+      <param name="camera_topic" type="str" value="/black_car/camera/color/image_raw" />
+      <param name="publish_topic" type="str" value="/semantic_segmentation/black_car/car_output" />
+    </node>
+  </group> -->
+  <!-- Yellow Car -->
+  <!-- <group ns="yellow_car_group">
+    <node pkg="f1tenth_semantic_segmentation" name="yellow_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
+      <param name="camera_topic" type="str" value="/yellow_car/camera/color/image_raw" />
+      <param name="publish_topic" type="str" value="/semantic_segmentation/yellow_car/car_output" />
+    </node>
+  </group> -->
+  <!-- Clear Car -->
+  <!-- <group ns="clear_car_group">
+    <node pkg="f1tenth_semantic_segmentation" name="red_car_semantic_segmentation" type="f1tenth_semantic_segmentation">
+      <param name="camera_topic" type="str" value="/clear_car/camera/color/image_raw" />
+      <param name="publish_topic" type="str" value="/semantic_segmentation/clear_car/car_output" />
+    </node>
+  </group> -->
+
+
+
+  <!-- Autonous Control Nodes -->
+  <rosparam command="load" file="$(find sample_lane_follower_node)/settings.yaml"/>
+  <!-- Test Car -->
+  <!--<group ns="test_car_group">
+    <node pkg="sample_lane_follower_node" name="main_car_lane_follower" type="sample_lane_follower_node">
+      <param name="car_name" type="str" value="f1tenth_car" />
+      <param name="nav_drive_topic" type="str" value="/vesc/high_level/ackermann_cmd_mux/input/nav_0" />
+      <param name="speed" type="double" value="0.7" />
+    </node>
+  </group>-->
+  <!-- <group ns="test_car_group">
+    <node pkg="sample_overtaking_node" name="main_car_overtaking" type="sample_overtaking_node">
+      <param name="car_name" type="str" value="f1tenth_car" />
+      <param name="nav_drive_topic" type="str" value="/vesc/high_level/ackermann_cmd_mux/input/nav_0" />
+      <param name="scan_topic" type="str" value="/scan" />
+      <param name="speed" type="double" value="1.2" />
+      <param name="wait_time" type="int" value="2000" />
+    </node>
+  </group> -->
+  <!-- Red Car -->
+  <group ns="red_car_group">
+    <node pkg="sample_lane_follower_node" name="red_car_lane_follower" type="sample_lane_follower_node">
+      <param name="/car_name" type="str" value="red_car" />
+      <param name="/nav_drive_topic" type="str" value="/red_car/nav" />
+      <param name="speed" type="double" value="1" />
+    </node>
+  </group>
+  <!-- Blue Car -->
+  <!-- <group ns="blue_car_group">
+    <node pkg="sample_lane_follower_node" name="blue_car_lane_follower" type="sample_lane_follower_node">
+      <param name="/car_name" type="str" value="blue_car" />
+      <param name="/nav_drive_topic" type="str" value="/blue_car/nav" />
+      <param name="speed" type="double" value="1" />
+    </node>
+  </group> -->
+  <!-- Black Car -->
+  <!-- <group ns="black_car_group">
+    <node pkg="sample_lane_follower_node" name="black_car_lane_follower" type="sample_lane_follower_node">
+      <param name="/car_name" type="str" value="black_car" />
+      <param name="/nav_drive_topic" type="str" value="/black_car/nav" />
+      <param name="speed" type="double" value="1" />
+    </node>
+  </group> -->
+  <!-- Yellow Car -->
+  <!-- <group ns="yellow_car_group">
+    <node pkg="sample_lane_follower_node" name="yellow_car_lane_follower" type="sample_lane_follower_node">
+      <param name="/car_name" type="str" value="yellow_car" />
+      <param name="/nav_drive_topic" type="str" value="/yellow_car/nav" />
+      <param name="speed" type="double" value="1" />
+    </node>
+  </group> -->
+  <!-- Clear Car -->
+  <!-- <group ns="clear_car_group">
+    <node pkg="sample_lane_follower_node" name="clear_car_lane_follower" type="sample_lane_follower_node">
+      <param name="/car_name" type="str" value="clear_car" />
+      <param name="/nav_drive_topic" type="str" value="/clear_car/nav" />
+      <param name="speed" type="double" value="0.5" />
+    </node>
+  </group> -->
+   <!-- <include file="$(find f1tenth_object_tracking)/launch/f1tenth_object_tracking.launch" /> -->
+</launch>

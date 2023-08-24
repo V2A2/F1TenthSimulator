@@ -1,0 +1,5 @@
+<launch>
+    <rosparam command="load" file="$(find f1tenth_object_tracking)/settings.yaml"/>
+    <node pkg="f1tenth_object_tracking" name="f1tenth_object_tracking" type="f1tenth_object_tracking">
+    </node>
+</launch>

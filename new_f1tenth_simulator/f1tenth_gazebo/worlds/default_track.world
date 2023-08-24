@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+  <world name="default">
+    <scene>
+      <ambient>1 1 1 1</ambient>
+      <background>0.81176470588 0.81176470588 0.81176470588 1</background>
+      <shadows>false</shadows>
+    </scene>
+    <light type="directional" name="some_light">
+      <ambient>1 1 1 1</ambient>
+      <diffuse>1 1 1 1</diffuse>
+      <specular>1 1 1 1</specular>
+      <emissive>1 1 1 1</emissive>
+      <direction>-1 -1 -1</direction>
+    </light>
+    <include>
+      <uri>model://f1tenth_model</uri>
+    </include>
+     <include>
+      <pose>0 0 0 0 0 0</pose>
+      <uri>model://f1tenth_track_model</uri>
+    </include>
+    <plugin name="track_publisher" filename="libtrack_plugin.so">
+    </plugin>
+    <!-- <plugin name="world_controls" filename="libworld_controls_plugin.so">
+    </plugin> -->
+  </world>
+</sdf>

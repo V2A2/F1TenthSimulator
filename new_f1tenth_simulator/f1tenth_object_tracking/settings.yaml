@@ -1,0 +1,6 @@
+/model_topic: "/gazebo/model_states"
+/car_name: "f1tenth_car"
+/data_topic: "/object_detection/3d_model_info"
+/bounding_box_topic: "/object_detection/bounding_boxes"
+/camera_topic: "/3d_image/image_raw_depth"
+/image_publish_topic: "/object_detection/camera_view"

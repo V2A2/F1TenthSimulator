@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="f1tenth_input_handler" name="f1tenth_input_handler" type="f1tenth_input_handler">
+    </node>
+</launch>

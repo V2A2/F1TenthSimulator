@@ -1,0 +1,7 @@
+<launch>
+    <rosparam command="load" file="$(find f1tenth_semantic_segmentation)/settings.yaml"/>
+    <node pkg="f1tenth_semantic_segmentation" name="f1tenth_semantic_segmentation" type="f1tenth_semantic_segmentation" output="screen">
+        <param name="/camera_topic" type="string" value="/camera/color/image_raw" />
+        <param name="/publish_topic" type="string" value="/semantic_segmentation/car_output" />
+    </node>
+</launch>

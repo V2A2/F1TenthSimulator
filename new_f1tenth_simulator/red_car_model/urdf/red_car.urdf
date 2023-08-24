@@ -1,0 +1,302 @@
+<?xml version='1.0'?>
+<sdf version="1.5">
+  <model name="red_car">
+  <pose>0.1 0 0 0 0 0</pose>
+    <link name="base">
+      <pose>0 0 .05 0 0 0</pose>
+        <inertial>
+          <mass>40.0</mass>
+          <pose>-.095 0 0.05 0 0 0</pose>
+          <inertia>
+           <!-- inertias are tricky to compute -->
+            <!-- http://gazebosim.org/tutorials?tut=inertia&cat=build_robot -->
+            <ixx>0.166</ixx>       <!-- for a box: ixx = 0.083 * mass * (y*y + z*z) 0.05 --> 
+            <ixy>0.0</ixy>         <!-- for a box: ixy = 0 -->
+            <ixz>0.0</ixz>         <!-- for a box: ixz = 0 -->
+            <iyy>0.930929</iyy>       <!-- for a box: iyy = 0.083 * mass * (x*x + z*z) .2804-->
+            <iyz>0.0</iyz>         <!-- for a box: iyz = 0 -->
+            <izz>0.9488</izz>       <!-- for a box: izz = 0.083 * mass * (x*x + y*y) .3104-->
+          </inertia>
+        </inertial>
+        <collision name="collision">
+        <pose>0 0 0 0 0 -1.57079632679</pose>
+          <geometry>
+            <mesh>
+              <uri>model://red_car_model/meshes/RedCar.dae</uri>
+            </mesh>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <pose>-0.1 0 -0.05 0 0 -1.57079632679</pose>
+          <geometry>
+            <mesh>
+              <uri>model://red_car_model/meshes/RealRedCar.dae</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <sensor type="ray" name="head_hokuyo_sensor">
+          <pose>0 0 0.08 0 0 0</pose>
+          <visualize>false</visualize>
+          <update_rate>40</update_rate>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>1080</samples>
+                <resolution>1</resolution>
+                <min_angle>-2.35619</min_angle>
+                <max_angle>2.35619</max_angle>
+              </horizontal>
+            </scan>
+            <range>
+              <min>0.1</min>
+              <max>10.0</max>
+              <resolution>0.01</resolution>
+            </range>
+            <!--<noise>
+              <type>gaussian</type>
+               Noise parameters based on published spec for Hokuyo laser
+                  achieving "+-30mm" accuracy at range < 10m.  A mean of 0.0m and
+                  stddev of 0.01m will put 99.7% of samples within 0.03m of the true
+                  reading. 
+              <mean>0.0</mean>
+              <stddev>0.01</stddev>
+            </noise>-->
+          </ray>
+          <plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_laser.so">
+            <topicName>/red_car/scan</topicName>
+            <frameName>hokuyo_link</frameName>
+          </plugin>
+        </sensor>
+        <sensor name="depth" type="depth">
+          <pose frame="">-0.02 -0.003 0.1604 0 0 0</pose>
+           <camera name="__default__">
+            <horizontal_fov>0.752708147</horizontal_fov>
+            <vertical_fov>0.752708147</vertical_fov>
+            <image>
+              <width>640</width>
+              <height>480</height>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>100</far>
+            </clip>
+            <!--<noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.007</stddev>
+            </noise>-->
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>60</update_rate>
+          <visualize>0</visualize>
+          <plugin name="kinect_plugin" filename="libgazebo_ros_openni_kinect.so">
+              <baseline>0.1</baseline>
+              <alwaysOn>true</alwaysOn>
+              <updateRate>0.0</updateRate>
+              <cameraName>red_car</cameraName>
+              <imageTopicName>/red_car/camera/color/image_raw</imageTopicName>
+              <cameraInfoTopicName>/red_car/camera/color/camera_info</cameraInfoTopicName>
+              <depthImageTopicName>/red_car/3d_image/image_raw_depth</depthImageTopicName>
+              <depthImageInfoTopicName>/red_car/3d_image/camera_info</depthImageInfoTopicName>
+              <pointCloudTopicName>/red_car/3d_image/3d_cloud</pointCloudTopicName>
+              <frameName>red_car</frameName>
+              <pointCloudCutoff>0.5</pointCloudCutoff>
+              <pointCloudCutoffMax>2.0</pointCloudCutoffMax>
+          </plugin>
+        </sensor>
+      </link>
+    <link name="front_left_wheel_connector">
+    <pose> .065 0.1 0.05 0 0 0</pose>
+    <inertial>
+        <inertia>
+            <ixx>0.0</ixx>      
+            <ixy>0.0</ixy>     
+            <ixz>0.0</ixz>      
+            <iyy>0.0</iyy>     
+            <iyz>0.0</iyz>         
+            <izz>0.0</izz>   
+          </inertia>
+    </inertial>
+    </link>
+    <link name="front_right_wheel_connector">
+    <pose> .065 -0.1 0.05 0 0 0</pose>
+    <inertial>
+        <inertia>
+            <ixx>0.0</ixx>      
+            <ixy>0.0</ixy>     
+            <ixz>0.0</ixz>      
+            <iyy>0.0</iyy>     
+            <iyz>0.0</iyz>         
+            <izz>0.0</izz>   
+          </inertia>
+    </inertial>
+    </link>
+    <link name="front_left_wheel">
+        <pose> .065 0.1 0.05 0 1.57079632679 1.57079632679</pose>
+        <inertial>
+        <mass>0.2</mass>
+        <inertia>
+            <ixx>0.00015166666</ixx>      
+            <ixy>0.0</ixy>     
+            <ixz>0.0</ixz>      
+            <iyy>0.00015166666</iyy>     
+            <iyz>0.0</iyz>         
+            <izz>0.00025</izz>   
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>.05</radius>
+              <length>.04</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+      <link name="back_left_wheel">
+        <pose> -.255 0.1 0.05 0 1.57079632679 1.57079632679</pose>
+        <inertial>
+        <mass>0.2</mass>
+        <inertia>
+            <ixx>0.00015166666</ixx>      
+            <ixy>0.0</ixy>     
+            <ixz>0.0</ixz>      
+            <iyy>0.00015166666</iyy>     
+            <iyz>0.0</iyz>         
+            <izz>0.00025</izz>   
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>.05</radius>
+              <length>.04</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+      <link name="front_right_wheel">
+        <pose> .065 -0.1 0.05 0 1.57079632679 1.57079632679</pose>
+        <inertial>
+        <mass>0.2</mass>
+        <inertia>
+            <ixx>0.00015166666</ixx>      
+            <ixy>0.0</ixy>     
+            <ixz>0.0</ixz>      
+            <iyy>0.00015166666</iyy>     
+            <iyz>0.0</iyz>         
+            <izz>0.00025</izz>   
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>.05</radius>
+              <length>.04</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+      <link name="back_right_wheel">
+        <pose> -.255 -0.1 0.05 0 1.57079632679 1.57079632679</pose>
+        <inertial>
+        <mass>0.2</mass>
+        <inertia>
+            <ixx>0.00015166666</ixx>      
+            <ixy>0.0</ixy>     
+            <ixz>0.0</ixz>      
+            <iyy>0.00015166666</iyy>     
+            <iyz>0.0</iyz>         
+            <izz>0.00025</izz>   
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <cylinder>
+              <radius>.05</radius>
+              <length>.04</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+       <joint type="revolute" name="front_left_joint_turning">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>base</parent>
+        <child>front_left_wheel_connector</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+        </axis>
+      </joint>
+      <joint type="revolute" name="front_right_joint_turning">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>base</parent>
+        <child>front_right_wheel_connector</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+        </axis>
+      </joint>
+      <joint type="revolute" name="front_left_joint">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>front_left_wheel_connector</parent>
+        <child>front_left_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+        </axis>
+      </joint>
+      <joint type="revolute" name="back_left_joint">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>base</parent>
+        <child>back_left_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+        </axis>
+      </joint>
+      <joint type="revolute" name="front_right_joint">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>front_right_wheel_connector</parent>
+        <child>front_right_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+        </axis>
+      </joint>
+      <joint type="revolute" name="back_right_joint">
+        <pose>0 0 0 0 0 0</pose>
+        <parent>base</parent>
+        <child>back_right_wheel</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-10000000000000000</lower>
+            <upper>10000000000000000</upper>
+          </limit>
+        </axis>
+      </joint>
+      <plugin name="wheel_control" filename="libwheel_plugin.so">
+      <velocity>0</velocity>
+      <steering_angle>0</steering_angle>
+      <upload_topic>/red_car/nav</upload_topic>
+      </plugin>
+      <plugin name="test" filename="libtest_plugin.so">
+      </plugin>
+  </model>
+</sdf>
