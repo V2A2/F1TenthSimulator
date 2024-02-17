@@ -15,14 +15,3 @@ include_directories(${GAZEBO_INCLUDE_DIRS})
 link_directories(${GAZEBO_LIBRARY_DIRS})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
-
-# Build the stand-alone test program
-#add_executable(vel vel.cc)
-
-#if (${gazebo_VERSION_MAJOR} LESS 6)
-#  include(FindBoost)
-#  find_package(Boost ${MIN_BOOST_VERSION} REQUIRED system filesystem regex)
-#  target_link_libraries(vel ${GAZEBO_LIBRARIES} ${Boost_LIBRARIES})
-#else()
-#  target_link_libraries(vel ${GAZEBO_LIBRARIES})
-#endif()

@@ -35,9 +35,8 @@ class SemanticSegmentation{
          n.getParam("publish_topic", publish_topic);
         image_pub_ = image_transport.advertise(publish_topic, 1);
         n.getParam("/visualize_semantic_segmentation",visualize_topic);
-        // //Test
+        // // Sliders Used for testing and finding the right rgb range
         // namedWindow(TEST_WINDOW);
-        // //used for testing
         //  namedWindow("Trackbars",(640,200));
         //  createTrackbar("R min","Trackbars",&rmin,255);
         //  createTrackbar("R max","Trackbars",&rmax,255);
@@ -109,7 +108,7 @@ class SemanticSegmentation{
     //Output modified video stream
     image_pub_.publish(out_msg.toImageMsg());
 
-    // //Testing
+    // // Lines to add if calibrating semantic segmentation image
     // cv::imshow(TEST_WINDOW, outputMat);
     // //wait time is in miliseconds
     // cv::waitKey(3);

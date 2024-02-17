@@ -2,7 +2,7 @@
 <package format="2">
   <name>f1tenth_semantic_segmentation</name>
   <version>0.0.0</version>
-  <description>The f1tenth_semantic_segmentation package</description>
+  <description>Package to create semantic segmentation images within the simulator</description>
   <maintainer email="ryan@todo.todo">ryan</maintainer>
   <license>TODO</license>
  <build_depend>roscpp</build_depend>
@@ -15,9 +15,6 @@
   <exec_depend>std_msgs</exec_depend>
   <build_depend>cv_bridge</build_depend>
   <exec_depend>image_transport</exec_depend>
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- Other tools can request additional information be placed here -->
-
   </export>
 </package>

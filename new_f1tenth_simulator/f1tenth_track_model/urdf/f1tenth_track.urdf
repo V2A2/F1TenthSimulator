@@ -34,6 +34,7 @@
            <emissive>0.81176470588 0.81176470588 0.81176470588 1</emissive>
           </material>
         </visual>
+        <!-- Add the below lines if you would like to add the 3d model for the test environment our project was tested with-->
         <!--<visual name="visual">
           <pose>0 0 0 0 0 0</pose>
           <geometry>

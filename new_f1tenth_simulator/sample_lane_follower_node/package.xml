@@ -2,8 +2,8 @@
 <package format="2">
   <name>sample_lane_follower_node</name>
   <version>0.0.0</version>
-  <description>The sample_lane_follower_node package</description>
-  <maintainer email="ryan@todo.todo">ryan</maintainer>
+  <description>Sample lane following node for simulator</description>
+  <maintainer email="rbrown53@huskers.unl.edu">Ryan Brown</maintainer>
   <license>TODO</license>
  <build_depend>roscpp</build_depend>
   <exec_depend>roscpp</exec_depend>
@@ -18,9 +18,6 @@
   <exec_depend>geometry_msgs</exec_depend>
   <build_depend>road_description</build_depend>
   <exec_depend>road_description</exec_depend>
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <!-- Other tools can request additional information be placed here -->
-
   </export>
 </package>
