@@ -5,6 +5,8 @@ Simulation requres ros noetic and gazebo 11
 
 http://wiki.ros.org/noetic/Installation/Ubuntu
 
+https://classic.gazebosim.org/tutorials?tut=install_ubuntu
+
 Download the latest LibTorch version
 
 https://pytorch.org/get-started/locally/
