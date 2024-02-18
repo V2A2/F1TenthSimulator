@@ -1,6 +1,6 @@
 # F1Tenth Gazebo Simulator
 
-A Gazebo-based simulation created for the F1Tenth Platform focused on perception-based autonomous driving.
+A Gazebo-based simulation created for the F1Tenth Platform focused on camera-based autonomous driving.
 
 
 ## Installation
