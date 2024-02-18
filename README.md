@@ -45,6 +45,15 @@ To change the track with which the cars will drive on, navigate to new_f1tenth_s
 By default, all cars in the simulator except for the base f1tenth_model car have automatic lane following options added by default. To disable this feature or switch the autonomous driving mode, simply open new_f1tenth_simulator/f1tenth_gazebo/simulator.launch  and remove or comment out the autonomous driving control nodes named sample_lane_follower_node.
 
 ### Enabling / disabling semantic segmentation output
+By default, the semantic segmentation camera is only added to the base f1tenth model. To add the semantic segmentation camera to the other vehicles, simply edit new_f1tenth_simulator/f1tenth_gazebo/simulator.launch and add the commented nodes under the semantic segmentation section to the launch file. 
+
+Due to gazebo having no innate support for semantic segmentation, we cannot use the semantic segmentation camera under the normal conditions of the simulator. Without modifying the models of the objects in the simulator, the image will come out as a black image. To avoid this issue, we simply modify all the textures of the vehicle and road such that they only contain one color. Using the RGB values of these textures, we can obtain the segmentation masks for each object. To condense the models to a single color, simply uncomment the material line in each model's urdf file. 
+This should look something like
+```
+<!--<material><ambient>0 0 0 1</ambient><diffuse>0 0 0 1</diffuse><specular>0 0 0 0</specular><emissive>1 1 1 1</emissive></material>-->
+
+``` 
+Changing the emissive value to some r g b a combination will set a color that the simulator will identify. These colors are classified in the f1tenth_semantic_segmentation.cpp file in the f1tenth_semantic_segmentation folder.
 
 ### Adding additional cars to the simulator
 Once the simulator has been launched, navigate to the Insert tap in the top left. Assuming the gazebo model path has been properly set in the installation instructions, there should be a drop-down menu for [Path to Catkin Workspace]/src/new_f1tenth_simulator. Simply left click on the car that you would like to add, and left click again in the main window to place the car into the simulation. 
