@@ -14,7 +14,7 @@ Instructions to install Gazebo 11 can be found [here](https://classic.gazebosim.
 
 Instructions to install OpenCV 4 can be found [here](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html).
 
-This simulator is a series of ROS packages that can be built using catkin.
+This simulator is a series of ROS packages that can be built using catkin and the catkin_workspace command.
 
 Tutorials to set up a catkin workspace and build a ros package can be found [here](https://wiki.ros.org/catkin/Tutorials).  
 
