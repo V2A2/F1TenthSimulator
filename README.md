@@ -22,7 +22,7 @@ Once a new catkin workspace is created, the new_f1tenth_simulator folder can be 
 
 Once ROS, Gazebo, and OpenCV are set up, and the ROS packages are built in a catkin workspace, the last step is to add the car models to the gazebo model path, so that the vehicles can be quickly added from the side bar.
 
-To do this simply open the bash.rc file in the user's home directory, and append the following line t
+To do this simply open the bash.rc file in the user's home directory, and append the following line:
 ```bash
 export GAZEBO_MODEL_PATH=[Path to Catkin Workspace]/src/new_f1tenth_simulator
 ```
