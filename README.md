@@ -18,6 +18,8 @@ This simulator is a series of ROS packages that can be built using catkin and th
 
 Tutorials to set up a catkin workspace and build a ros package can be found [here](https://wiki.ros.org/catkin/Tutorials).  
 
+Once a new catkin workspace is created, the new_f1tenth_simulator folder can be added to the src folder of the catkin workspace and built with the catkin_make command.
+
 Once ROS, Gazebo, and OpenCV are set up, and the ROS packages are built in a catkin workspace, the last step is to add the car models to the gazebo model path, so that the vehicles can be quickly added from the side bar.
 
 To do this simply open the bash.rc file in the user's home directory, and append the following line t
